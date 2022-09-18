@@ -133,6 +133,13 @@ public class CreateApp {
         }
 
     }
+
+    /**
+     *
+     *
+     * @param userInput
+     * @return
+     */
     public String extractIdFromElection(String userInput) {
         try {
             if (userInput.matches("^(lookup lead|lookup salesrep|lookup account|lookup opportunity|convert|close-lost|close-won)\s.+")) {

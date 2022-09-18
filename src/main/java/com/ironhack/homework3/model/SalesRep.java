@@ -14,8 +14,6 @@ public class SalesRep {
 
     private String name;
 
-
-
     @OneToMany(mappedBy = "salesRep")
     private Map<Integer, Lead> leads;
     @OneToMany(mappedBy = "salesRep")
