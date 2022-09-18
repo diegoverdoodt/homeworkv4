@@ -14,7 +14,7 @@ public class SalesRep {
 
     private String name;
 
-    private static int initialID = 0;
+
 
     @OneToMany(mappedBy = "salesRep")
     private Map<Integer, Lead> leads;
@@ -24,14 +24,10 @@ public class SalesRep {
     public SalesRep(){}
 
     public SalesRep(String name) {
-        setUniqueId();
+
         this.name = name;
         this.leads = new HashMap<>();
         this.opportunities = new HashMap<>();
-    }
-
-    public void setUniqueId() {
-        this.id = initialID++;
     }
 
 
@@ -45,14 +41,6 @@ public class SalesRep {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public static int getInitialID() {
-        return initialID;
-    }
-
-    public static void setInitialID(int initialID) {
-        SalesRep.initialID = initialID;
     }
 
     public Map<Integer, Lead> getLeads() {

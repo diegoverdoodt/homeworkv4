@@ -15,8 +15,8 @@ import java.util.Scanner;
 @Component
 public class CreateApp {
 
-    @Autowired
-    private Actions actions;
+//    @Autowired
+//    private Actions actions;
     @Autowired
     private AccountService accountService;
 
@@ -440,11 +440,12 @@ public class CreateApp {
 
 
     private void llenarTablas(){
-//        SalesRep salesRep1 = this.actions.addSalesRep(new SalesRep("Antonio"));
-//        SalesRep salesRep2 = this.actions.addSalesRep(new SalesRep("Miguel"));
-
         SalesRep salesRep1 = new SalesRep("Antonio");
-        //salesRepService.save(salesRep1);
+        SalesRep salesRep2 = new SalesRep("Miguel");
+
+
+        salesRepService.save(salesRep1);
+        salesRepService.save(salesRep2);
 
 
 

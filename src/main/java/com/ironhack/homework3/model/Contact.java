@@ -11,7 +11,7 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-    private static int initialID = 0;
+
     @Column(name="name")
     private String name;
     @Column(name="phone_number")
@@ -31,14 +31,11 @@ public class Contact {
 
     public Contact(){}
     public Contact(Lead lead) {
-        setUniqueId();
+
         this.name = lead.getName();
         this.phoneNumber = lead.getPhoneNumber();
         this.email = lead.getEmail();
         this.companyName = lead.getCompanyName();
-    }
-    public void setUniqueId() {
-        this.id = initialID++;
     }
 
     public int getId() {

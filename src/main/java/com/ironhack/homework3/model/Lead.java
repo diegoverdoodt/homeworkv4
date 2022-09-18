@@ -26,7 +26,6 @@ public class Lead {
         setPhoneNumber(phoneNumber);
         setEmail(email);
         this.companyName = companyName;
-        setUniqueId();
         //this.salesRep = salesRep;
     }
 
@@ -35,7 +34,7 @@ public class Lead {
         setPhoneNumber(phoneNumber);
         setEmail(email);
         this.companyName = companyName;
-        setUniqueId();
+
         this.salesRep = salesRep;
     }
 

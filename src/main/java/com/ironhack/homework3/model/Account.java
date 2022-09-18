@@ -18,7 +18,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-    private static int initialID = 0;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name="industry")
@@ -45,12 +45,12 @@ public class Account {
     }
 
     public Account(){
-        setUniqueId();
+
         this.contactList = new ArrayList<>();
         this.opportunityList = new ArrayList<>();
     }
     public Account(String industry, int employeeCount, String city, String country) {
-        setUniqueId();
+
         setIndustry(industry);
         this.employeeCount = employeeCount;
         this.city = city;
@@ -59,9 +59,7 @@ public class Account {
         this.opportunityList = new ArrayList();
     }
 
-    public void setUniqueId() {
-        this.id = initialID++;
-    }
+
 
     public int getId() {
         return id;
@@ -128,14 +126,6 @@ public class Account {
 
     public void setOpportunity(Opportunity opportunity){
         this.opportunityList.add(opportunity);
-    }
-
-    public static int getInitialID() {
-        return initialID;
-    }
-
-    public static void setInitialID(int initialID) {
-        Account.initialID = initialID;
     }
 
     public void setIndustry(Industry industry) {

@@ -45,7 +45,7 @@ public class Opportunity {
     public Opportunity(){}
 
     public Opportunity(String product, int quantity, Contact decisionMaker, SalesRep salesRep) {
-        setUniqueId();
+
         setProduct(product);
         this.quantity = quantity;
         this.decisionMaker = decisionMaker;
