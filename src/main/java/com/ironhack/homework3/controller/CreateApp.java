@@ -48,6 +48,7 @@ public class CreateApp {
 //        return salesRepService;
 //    }
 
+
     private boolean appIsOn;
     private int intId;
 
@@ -147,7 +148,7 @@ public class CreateApp {
                 intId = Integer.parseInt(userInputSplit[(userInputSplit.length - 1)]);
                 //deletes last word from userInput (from character 0 to last word obtained with lastindexOf)
                 return userInput.substring(0, userInput.lastIndexOf(" "));
-            } else if (userInput.matches("^(new lead|show leads|new salesrep|show opportunities|show accounts|show salesrep|exit)")) {
+            } else if (userInput.matches("^(new lead|show leads|new salesrep|show opportunities|show accounts|show salesreps|exit)")) {
                 return userInput;
             }
             return "incorrect input";
@@ -169,8 +170,8 @@ public class CreateApp {
             "New Lead               \n" + //
             "Show Leads             \n" + //
             "Lookup Lead id         \n" + //
-            "New SalesRep          \n" + //
-            "Show SalesRep          \n" + //
+            "New SalesRep           \n" + //
+            "Show SalesReps         \n" + //
             "Lookup SalesRep id     \n" + //
             "Show Opportunities     \n" + //
             "Lookup Opportunity id  \n" + //
@@ -187,7 +188,7 @@ public class CreateApp {
             "\nEnter the phone number of the lead: ",
             "\nEnter the lead contact e-mail: ",
             "\nEnter the name of the company:",
-            "\nEnter the name of the SalesRep:"};
+            "\nEnter the ID of the SalesRep:"};
 
     String salesRepString[] = {"Please enter the values for the SalesRep: name",
             "\nEnter the SalesRep name:"};
@@ -261,6 +262,19 @@ public class CreateApp {
                     System.err.println("That was not a valid vehicle! Please introduce either HYBRID, FLATBED o BOX");
                     return false;
                 }
+            case "\nEnter the ID of the SalesRep:":
+                try {
+                    Integer.parseInt(answer);
+                    if (salesRepService.getById(Integer.parseInt(answer)) == null){
+                        System.err.println("Incorrect ID. Choose a correct one");
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } catch (Throwable exception) {
+                    System.err.println("Write a number");
+                    return false;
+                }
             case "How many of them? \n":
             case "Enter the number of employees: \n":
                 try {
@@ -275,32 +289,56 @@ public class CreateApp {
         }
     }
 
+//                case "\nChoose the ID from the SalesRep\n":
+//                        try{
+//        boolean isNumeric = false;
+//        if (isNumeric == answer.chars().allMatch(Character::isDigit)){
+//            for (SalesRep salesRep : salesRepService.getAll()) {
+//                if(salesRep.getId() == Integer.parseInt(answer))
+//                    return true;
+//            }
+//        }
+//
+//    } catch (Throwable exception) {
+//        System.err.println("Choose a correct ID");
+//        return false;
+//    }
+
+
+    /**
+     * Funcion que crea el Lead.
+     * Printa la pregunta incial y luego separamos en dos Strings el String inicial
+     * System.arraycopy - coge del String de inicio desde la posicion que le marcamos y lo copia en el de destino desde
+     * la posicion deseada hasta el largo que queramos. En este caso no lo cogemos hasta el final. La ultima la usamos
+     * para averiguar el SalesRep asociado
+     * String leadQuest[] - preguntas sin el SalesRep
+     * String leadSalesRep - pregunta del salesRep
+     *
+     * printShow muestra los SalesReps elegibles
+     *
+     *
+     *
+     */
     private void createLead(){
         System.out.println(leadString[0]);
 
-        String leadQuest[] = new String[leadString.length-1];
+        String leadQuest[] = new String[leadString.length-2];
+        String leadSalesRep[] = {leadString[leadString.length-1]};
         System.arraycopy(leadString,1, leadQuest, 0, leadQuest.length);
         List<String> clientData = getInputData(leadQuest);
 
-        String salesRepName = clientData.get(4);
-        revisarSalesRep(salesRepName);
-        Lead lead = new Lead(clientData.get(0), clientData.get(1), clientData.get(2), clientData.get(3));
+        System.out.println("\nChoose the ID from the SalesRep");
+        printShow("salesrep");
+
+        List<String> clientSalesRep = getInputData(leadSalesRep);
+
+
+        Lead lead = new Lead(clientData.get(0), clientData.get(1), clientData.get(2), clientData.get(3), salesRepService.getById(Integer.parseInt(clientSalesRep.get(0))));
 
         leadService.save(lead);
     }
 
-    private SalesRep revisarSalesRep(String salesRepName) {
-        SalesRep salesRep1 = new SalesRep();
-        for (SalesRep salesRep : salesRepService.getAll()) {
-            if (!salesRep.getName().equals(salesRepName)){
-                salesRep1.setName(salesRepName);
-                salesRepService.save(salesRep1);
-            } else {
-                salesRep1.setName(salesRep.getName());
-            }
-        }
-        return salesRep1;
-    }
+
 
     private void createSalesRep() {
         System.out.println(salesRepString[0]);
@@ -313,6 +351,63 @@ public class CreateApp {
         SalesRep salesRep = new SalesRep(clientData.get(0));
         salesRepService.save(salesRep);
     }
+
+    /*public void convertId() {  //Crea el contacto, oportunidad y cuenta
+        try {
+            Lead lead = leadService.getById(intId);
+
+
+
+            // CREA EL CONTACTO
+            Contact contact = new Contact(lead);
+            contactService.save(contact);
+
+
+
+            // CREA LA OPORTUNIDAD
+            List<String> opportunityData = getInputData(opportunityString);
+
+            SalesRep salesRep = lead.getSalesRep();
+            Opportunity opportunity = new Opportunity(opportunityData.get(0), Integer.parseInt(opportunityData.get(1)), contact, salesRep);
+            opportunityMap.put(opportunity.getId(), opportunity);
+
+//            SalesRep salesRep1 = lead1.getSalesRep();
+//            Opportunity opportunity1 = new Opportunity(opportunityData.get(0), Integer.parseInt(opportunityData.get(1)), contact, salesRep1);
+//            opportunityRepository.save(opportunity1);
+
+
+
+            // CREA LA CUENTA
+            System.out.println("Please add some new data about the client");
+            List<String> accountData = getInputData("Enter the company industry (Produce, ecommerce, manufacturing, medical or other): \n",
+                    "Enter the number of employees: \n",
+                    "Enter the city: \n",
+                    "Enter the country: \n");
+//
+            Account account = new Account(accountData.get(0).toLowerCase(), Integer.parseInt(accountData.get(1)), accountData.get(2), accountData.get(3));
+            accountMap.put(account.getId(), account);
+
+            //accountRepository.save(account);
+
+
+
+            //BORRA LEAD
+            leadsMap.remove(intId);
+
+            //leadRepository.deleteById(intId);
+
+
+            //comprobación
+            System.out.println(opportunity.getId() + " " + opportunity.getProduct() + " " + opportunity.getQuantity());
+            System.out.println(account.getIndustry() + " " + account.getEmployeeCount() + " " + account.getCity() + " " + account.getCountry());
+        } catch (Throwable exception) {
+            System.err.println("" +
+                    "\n######################################################\n" +
+                    "The id was not found! Please enter a valid id number!\n" +
+                    "######################################################\n");
+        }
+    }*/
+
 
 
     /**
@@ -391,11 +486,10 @@ public class CreateApp {
             case "lead":
                 if(!leadService.getAll().isEmpty()){
                     System.out.println("\n-------------------------------------------------------------------------------------------------");
-                    System.out.printf("%5s %15s %25s %25s %25s", "ID", "Name", "Phone number", "Email", "Company\n");
+                    System.out.printf("%5s %15s %25s %25s %25s %15s %25s", "ID", "Name", "Phone number", "Email", "Company", "SalesRep ID", "SalerRep Name\n");
                     for (Lead lead : leadService.getAll()) {
-                        System.out.printf("%5s %15s %25s %25s %25s", lead.getId(), lead.getName(), lead.getPhoneNumber(), lead.getEmail(), lead.getCompanyName() + lead.getSalesRep() + "\n");
+                        System.out.printf("%5s %15s %25s %25s %25s %15s %25s", lead.getId(), lead.getName(), lead.getPhoneNumber(), lead.getEmail(), lead.getCompanyName(), lead.getSalesRepId(), lead.getSalesRepName() + "\n");
                     }
-                    System.out.println("\n");
                 } else {
                     System.out.println("There are currently no leads to display!");
                 }
@@ -406,9 +500,9 @@ public class CreateApp {
                     System.out.println("\n-------------------------------------------------------------------------------------------------");
                     System.out.printf("%5s %15s", "ID", "Name\n");
                     for (SalesRep salesRep : salesRepService.getAll()) {
-                        System.out.printf("%5s %15s", salesRep.getId(), salesRep.getName());
+                        System.out.printf("%5s %15s", salesRep.getId(), salesRep.getName() + "\n" );
                     }
-                    System.out.println("\n");
+
                 } else {
                     System.out.println("There are currently no leads to display!");
                 }
@@ -419,9 +513,9 @@ public class CreateApp {
                     System.out.println("\n-------------------------------------------------------------------------------------------------");
                     System.out.printf("%5s %15s %25s %25s %25s %25s", "ID", "Product", "Quantity","Decision maker","Status","SalesRep");
                     for (Opportunity opportunity : opportunittyService.getAll()) {
-                        System.out.printf("%5s %15s %25s %25s %25s %25s", opportunity.getId(), opportunity.getProduct(), opportunity.getQuantity(), opportunity.getDecisionMaker(), opportunity.getStatus(),opportunity.getSalesRep());
+                        System.out.printf("%5s %15s %25s %25s %25s %25s", opportunity.getId(), opportunity.getProduct(), opportunity.getQuantity(), opportunity.getDecisionMaker(), opportunity.getStatus(),opportunity.getSalesRep()+ "\n");
                     }
-                    System.out.println("\n");
+
                 } else {
                     System.out.println("There are currently no leads to display!");
                 }
@@ -431,9 +525,9 @@ public class CreateApp {
                     System.out.println("\n-------------------------------------------------------------------------------------------------");
                     System.out.printf("%5s %15s %25s %25s %25s %25s %25s", "ID", "Industry", "Employee count","City","Country","Contact List","Opportunity List");
                     for (Account account: accountService.getAll()) {
-                        System.out.printf("%5s %15s %25s %25s %25s %25s %25s", account.getId(), account.getIndustry(), account.getEmployeeCount(),account.getCity(), account.getCountry(), account.getContactList(), account.getOpportunityList());
+                        System.out.printf("%5s %15s %25s %25s %25s %25s %25s", account.getId(), account.getIndustry(), account.getEmployeeCount(),account.getCity(), account.getCountry(), account.getContactList(), account.getOpportunityList() + "\n");
                     }
-                    System.out.println("\n");
+
                 } else {
                     System.out.println("There are currently no leads to display!");
                 }
@@ -456,12 +550,12 @@ public class CreateApp {
 
 
 
-//
-//        Lead lead1 = new Lead("Diego", "987654321","diego@diego.com","DD", salesRep1);
-//        Lead lead2 = new Lead("Javier", "123456789","javier@javier.com","JJ", salesRep1);
-//        Lead lead3 = new Lead("Daniel", "321654987","daniel@daniel.com","DADA", salesRep2);
-//        Lead lead4 = new Lead("Genaro", "789456123","Genaro@Genaro.com","GG", salesRep2);
-//        Lead lead5 = new Lead("David", "789456123","David@David.com","dada", salesRep1);
+
+        Lead lead1 = new Lead("Diego", "987654321","diego@diego.com","DD", salesRep1);
+        Lead lead2 = new Lead("Javier", "123456789","javier@javier.com","JJ", salesRep1);
+        Lead lead3 = new Lead("Daniel", "321654987","daniel@daniel.com","DADA", salesRep2);
+        Lead lead4 = new Lead("Genaro", "789456123","Genaro@Genaro.com","GG", salesRep2);
+        Lead lead5 = new Lead("David", "789456123","David@David.com","dada", salesRep1);
 //
 //        leadService.save(lead1);
 //        leadService.save(lead2);

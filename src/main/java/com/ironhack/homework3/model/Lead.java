@@ -89,6 +89,14 @@ public class Lead {
         return salesRep;
     }
 
+    public int getSalesRepId() {
+        return salesRep.getId();
+    }
+
+    public String getSalesRepName(){
+        return salesRep.getName();
+    }
+
     public void setSalesRep(SalesRep salesRep) {
         this.salesRep = salesRep;
     }

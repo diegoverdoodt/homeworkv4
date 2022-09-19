@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AppHW3 {
 
-	@Autowired
-	private CreateApp createApp;
+//	@Autowired
+//	private CreateApp createApp;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppHW3.class, args);
