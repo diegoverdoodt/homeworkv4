@@ -121,6 +121,7 @@ public class CreateApp {
                     System.out.println("Saving data...");
                     //Crear CSV con los datos
                     System.out.println("Closing app...");
+
                     break;
                 default:
                     //volver al inicio pq no coincide
@@ -384,6 +385,14 @@ public class CreateApp {
                     System.out.println("\n");
                     return false;
                 }
+            case "Would you like to create a new Account? (Y/N)":
+                if (answer.matches("y|n")) {
+                    return true;
+                } else {
+                    System.err.println("Incorrect answer. Use Y or N please");
+                    System.out.println("\n");
+                    return false;
+                }
             case "Which account do you want associate with this opportunity":
                 try {
                     Integer.parseInt(answer);
@@ -517,38 +526,49 @@ public class CreateApp {
         Opportunity opportunity = new Opportunity(opportunityData.get(0), Integer.parseInt(opportunityData.get(1)),contact,salesRep);
 
         // Preguntamos si queremos crear una cuenta o utilizar una existente para asociar a esta oportunidad
-        System.out.println("Would you like to create a new Account? (Y/N)");
-        Scanner scan = new Scanner(System.in);
-        String election = scan.nextLine().toLowerCase();
+
 
         Account account = new Account();
-        // Evaluamos si el usuario responde que quiere crear una cuenta
-        if (election.equals("y")) {
 
-            // Creamos la cuenta con el cuestionario de creacion de cuenta
+        if (accountService.getAll().isEmpty()){
+            System.out.println("\nThere are not existing accounts. Please create one.\n");
             account = createAccount(contact);
             accountService.save(account);
 
-            // Recogemos el ID de la cuenta para
-            // int accountId = account.getId();
+        } else {
 
-        } else if (election.equals("n")) {
-            System.out.println("Choose the ID if one of the following account to associate to this opportunity");
-            printShow("account");
+            //System.out.println("Would you like to create a new Account? (Y/N)");
+            List<String> election = getInputData("Would you like to create a new Account? (Y/N)");
 
-            List<String> newOp = getInputData("Which account do you want associate with this opportunity");
+            // Evaluamos si el usuario responde que quiere crear una cuenta
+            if (election.get(0).equals("y")) {
 
-            account = accountService.getById(Integer.parseInt(newOp.get(0)));
+                // Creamos la cuenta con el cuestionario de creacion de cuenta
+                account = createAccount(contact);
+                accountService.save(account);
+
+            } else if (election.get(0).equals("n")) {
+
+                System.out.println("Choose the ID if one of the following account to associate to this opportunity");
+                printShow("account");
+
+                List<String> newOp = getInputData("Which account do you want associate with this opportunity");
+
+                account = accountService.getById(Integer.parseInt(newOp.get(0)));
+            }
         }
 
         opportunity.setAccount(account);
-        opportunittyService.save(opportunity);
 
-        System.out.println("New Opportunity created.\n");
+
+        opportunittyService.save(opportunity);
 
         contact.setAccount(account);
         contact.setOpportunity(opportunity);
+
         contactService.save(contact);
+
+        System.out.println("New Opportunity created.\n");
         return opportunity;
     }
 
