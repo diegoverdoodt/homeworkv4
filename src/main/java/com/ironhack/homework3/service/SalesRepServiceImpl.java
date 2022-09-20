@@ -59,8 +59,11 @@ public class SalesRepServiceImpl implements SalesRepService {
     }
 
     @Override
-    public List<SalesRep> getLeadsBySalesRep(SalesRep salesRep) {
-        return null;
+    public void countLeadsBySalesRep() {
+        List<SalesRep> allSalesRep = salesRepRepo.findAll();
+        for(SalesRep salesRep: allSalesRep){
+            System.out.println(salesRep.getName() + "  -> " + salesRep.getLeads().size());
+        }
     }
 
 

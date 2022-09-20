@@ -21,5 +21,5 @@ public interface SalesRepService {
 
     void create(String name);
 
-    List<SalesRep> getLeadsBySalesRep(SalesRep salesRep);
+    void countLeadsBySalesRep();
 }

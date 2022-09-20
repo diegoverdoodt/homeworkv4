@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 @Component
@@ -129,6 +130,118 @@ public class CreateApp {
 
     }
 
+    public void reportMenu(String election){
+        //remove "report" from  string if present
+        if (Objects.equals(election.split(" ")[0], "report")){ election = election.substring(7);}
+        switch (election) {
+            // BY SALES REP
+            case "lead by salesrep":
+                salesRepService.countLeadsBySalesRep();
+                System.out.println("entró");
+                break;
+            case "closed-won by salesrep":
+                System.out.println(election);
+                break;
+            case "closed-lost by salesrep":
+                System.out.println(election);
+                break;
+            case "open by salesrep":
+                System.out.println(election);
+                break;
+                // BY PRODUCT
+            case "opportunity by the product":
+                System.out.println(election);
+                break;
+            case "closed-won by the product":
+                System.out.println(election);
+                break;
+            case "closed-lost by the product":
+                System.out.println(election);
+                break;
+            case "open by the product":
+                System.out.println(election);
+                break;
+                // BY COUNTRY
+            case "opportunity by country":
+                System.out.println(election);
+                break;
+            case "closed-won by country":
+                System.out.println(election);
+                break;
+            case "closed-lost by country":
+                System.out.println(election);
+                break;
+            case "open by country":
+                System.out.println(election);
+                break;
+                // BY CITY
+            case "opportunity by city":
+                System.out.println(election);
+                break;
+            case "closed-won by city":
+                System.out.println(election);
+                break;
+            case "closed-lost by city":
+                System.out.println(election);
+                break;
+            case "open by city":
+                System.out.println(election);
+                break;
+                // BY INDUSTRY
+            case "opportunity by industry":
+                System.out.println(election);
+                break;
+            case "closed-won by industry":
+                System.out.println(election);
+                break;
+            case "closed-lost by industry":
+                System.out.println(election);
+                break;
+            case "open by industry":
+                System.out.println(election);
+                break;
+                // EMPLOYEE COUNT STATES
+            case "mean employeecount":
+                System.out.println(election);
+                break;
+            case "median employeecount":
+                System.out.println(election);
+                break;
+            case "max employeecount":
+                System.out.println(election);
+                break;
+            case "min employeecount":
+                System.out.println(election);
+                break;
+                // QUANTITY STATES
+            case "mean quantity":
+                System.out.println(election);
+                break;
+            case "median quantity":
+                System.out.println(election);
+                break;
+            case "max quantity":
+                System.out.println(election);
+                break;
+            case "min quantity":
+                System.out.println(election);
+                break;
+                // OPPORTUNITY STATES
+            case "mean opps per account":
+                System.out.println(election);
+                break;
+            case "median opps per account":
+                System.out.println(election);
+                break;
+            case "max opps per account":
+                System.out.println(election);
+                break;
+            case "min opps per account":
+                System.out.println(election);
+        }
+    }
+
+
     /**
      * Metodo que extrae el Id dela seleccion que realiza el usuario
      *
@@ -142,8 +255,19 @@ public class CreateApp {
                 intId = Integer.parseInt(userInputSplit[(userInputSplit.length - 1)]);
                 //deletes last word from userInput (from character 0 to last word obtained with lastindexOf)
                 return userInput.substring(0, userInput.lastIndexOf(" "));
-            } else if (userInput.matches("^(new lead|show leads|new salesrep|show opportunities|show accounts|show salesreps|exit)")) {
+            } else if (userInput.matches("^(new lead|show leads|new salesrep|show opportunities|show accounts|show salesrep|exit)")) {
                 return userInput;
+            } else if (userInput.matches("^(report lead by salesrep|report closed-won by salesrep|report closed-lost by salesrep|report open by salesrep" +
+                    "|report opportunity by the product|report closed-won by the product|report closed-lost by the product|report open by the product" +
+                    "|report opportunity by country|report closed-won by country|report closed-lost by country|report open by country" +
+                    "|report opportunity by city|report closed-won by city|report closed-lost by city|report open by city" +
+                    "|report opportunity by industry|report closed-won by industry|report closed-lost by industry|report open by industry" +
+                    "|mean employeecount|median employeecount|max employeecount|min employeecount" +
+                    "|mean quantity|median quantity|max quantity|min quantity" +
+                    "|mean opps per account|median opps per account|max opps per account|min opps per account)")) {
+
+                reportMenu(userInput);
+                return "report executed";
             }
             return "incorrect input";
         } catch (Throwable exception) {
