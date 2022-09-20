@@ -84,6 +84,7 @@ public class Contact {
 
     public void setAccount(Account account) {
         this.account = account;
+        account.setContact(this);
     }
 
     public Opportunity getOpportunity() {

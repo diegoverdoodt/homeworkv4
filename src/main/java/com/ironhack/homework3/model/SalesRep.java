@@ -56,4 +56,29 @@ public class SalesRep {
     public void setOpportunities(Map<Integer, Opportunity> opportunities) {
         this.opportunities = opportunities;
     }
+
+    public Opportunity getOpportunity(int id){
+        return opportunities.get(id);
+    }
+
+    public void deleteOpportunity (int id){
+        opportunities.remove(id);
+    }
+
+    public Lead getLead(int id){
+        Lead lead = leads.get(id);
+        if (lead == null) throw new IllegalArgumentException("No leads found with ID " + id);
+        return lead;
+    }
+
+    public void setLead(Lead lead){
+        if (lead == null) throw new IllegalArgumentException("No leads found with ID " + id);
+        leads.put(lead.getId(), lead);
+    }
+
+    public void deleteLead(int id){
+        Lead lead = leads.get(id);
+        if (lead == null) throw new IllegalArgumentException("No leads found with ID " + id);
+        leads.remove(id);
+    }
 }

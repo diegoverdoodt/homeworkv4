@@ -17,9 +17,10 @@ public class Opportunity {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    private static int initialID = 0;
+
     @Column(name = "product")
     @Enumerated(EnumType.STRING)
     private Product product;
@@ -36,7 +37,7 @@ public class Opportunity {
     private SalesRep salesRep;
 
     @OneToOne(mappedBy = "opportunity")
-    private Contact decisionMaker;
+    private Contact contact;
 
     @ManyToOne
     @JoinColumn(name = "account")
@@ -44,18 +45,20 @@ public class Opportunity {
 
     public Opportunity(){}
 
-    public Opportunity(String product, int quantity, Contact decisionMaker, SalesRep salesRep) {
-
+    public Opportunity(String product, int quantity) {
         setProduct(product);
         this.quantity = quantity;
-        this.decisionMaker = decisionMaker;
+        this.status = Status.OPEN;
+    }
+
+    public Opportunity(String product, int quantity, Contact contact, SalesRep salesRep) {
+        setProduct(product);
+        this.quantity = quantity;
+        this.contact = contact;
         this.status = Status.OPEN;
         this.salesRep = salesRep;
     }
 
-    public void setUniqueId() {
-        this.id = initialID++;
-    }
     public int getId() {
         return id;
     }
@@ -90,12 +93,12 @@ public class Opportunity {
         this.quantity = quantity;
     }
 
-    public Contact getDecisionMaker() {
-        return decisionMaker;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setDecisionMaker(Contact decisionMaker) {
-        this.decisionMaker = decisionMaker;
+    public void setContact(Contact decisionMaker) {
+        this.contact = contact;
     }
 
     public Status getStatus() {
@@ -115,33 +118,6 @@ public class Opportunity {
 
     public void setSalesRep(SalesRep salesRep) {
         this.salesRep = salesRep;
-    }
-
-    @ManyToOne(optional = false)
-    private Account accounts;
-
-    public Account getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(Account accounts) {
-        this.accounts = accounts;
-    }
-
-    public static int getInitialID() {
-        return initialID;
-    }
-
-    public static void setInitialID(int initialID) {
-        Opportunity.initialID = initialID;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public Account getAccount() {
