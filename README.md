@@ -4,7 +4,7 @@ How to use:
 
 Run the app and follow the instructions to manage it. It's simple to do it!
 
-Attention, some consultations have not been carried out due to lack of time.
+Attention, some @queries have not been carried out due to lack of time.
 
 Use Case Diagram
 
