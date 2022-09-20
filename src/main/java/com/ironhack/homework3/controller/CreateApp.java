@@ -39,7 +39,7 @@ public class CreateApp {
     /**
      * Metodo que inicia la aplicacion
      * La anotacion @PostConstruct hace que se inicie cuando los Beans ya se han creado
-     * Esto evita que las tablas sean nulas
+     * Esto evita que los beans de repositorio sean nulos
      *
      */
     @PostConstruct
@@ -255,7 +255,7 @@ public class CreateApp {
                 intId = Integer.parseInt(userInputSplit[(userInputSplit.length - 1)]);
                 //deletes last word from userInput (from character 0 to last word obtained with lastindexOf)
                 return userInput.substring(0, userInput.lastIndexOf(" "));
-            } else if (userInput.matches("^(new lead|show leads|new salesrep|show opportunities|show accounts|show salesrep|exit)")) {
+            } else if (userInput.matches("^(new lead|show leads|new salesrep|show opportunities|show accounts|show salesreps|exit)")) {
                 return userInput;
             } else if (userInput.matches("^(report lead by salesrep|report closed-won by salesrep|report closed-lost by salesrep|report open by salesrep" +
                     "|report opportunity by the product|report closed-won by the product|report closed-lost by the product|report open by the product" +
@@ -711,7 +711,7 @@ public class CreateApp {
                     }
                     System.out.println("\n");
                 } else {
-                    System.out.println("There are currently no leads to display!");
+                    System.out.println("There are currently no accounts to display!");
                     System.out.println("\n");
                 }
                 break;
