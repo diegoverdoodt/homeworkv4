@@ -463,7 +463,7 @@ public class CreateApp {
         switch(element) {
         case "lead":
             try {
-                Lead leadSel = leadService.getById(intId);
+                Lead leadSel = leadService.getById(id);
                 int leadId = leadSel.getId();
                 System.out.println("\n LEAD INFORMATION");
                 System.out.println("-------------------------------------------------------------------------------------------------");
@@ -475,13 +475,13 @@ public class CreateApp {
                         "\n######################################################\n" +
                         "The id was not found! Please enter a valid id number!\n" +
                         "######################################################\n");
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
             break;
 
         case "salesrep":
             try {
-                SalesRep salesRep = salesRepService.getById(intId);
+                SalesRep salesRep = salesRepService.getById(id);
                 int salesRepId = salesRep.getId();
                 System.out.println("\n SALESREP INFORMATION");
                 System.out.println("-------------------------------------------------------------------------------------------------");
@@ -493,12 +493,12 @@ public class CreateApp {
                         "\n######################################################\n" +
                         "The id was not found! Please enter a valid id number!\n" +
                         "######################################################\n");
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
             break;
         case "opportunity":
             try {
-                Opportunity opportunity = opportunittyService.getById(intId);
+                Opportunity opportunity = opportunittyService.getById(id);
                 System.out.println("\n OPPORTUNITY INFORMATION");
                 System.out.println("-------------------------------------------------------------------------------------------------");
                 System.out.printf("%5s %15s %25s %25s %25s %25s %25s %25s", "ID", "Product", "Quantity","Decision maker ID", "Decision maker","Status","SalesRep ID", "SalesRep" + "\n");
@@ -509,13 +509,13 @@ public class CreateApp {
                         "\n######################################################\n" +
                         "The id was not found! Please enter a valid id number!\n" +
                         "######################################################\n");
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
             break;
 
         case "account":
             try {
-                Account account = accountService.getById(intId);
+                Account account = accountService.getById(id);
                 System.out.println("\n ACCOUNT INFORMATION");
                 System.out.println("-------------------------------------------------------------------------------------------------");
                 System.out.printf("%5s %15s %25s %25s %25s", "ID", "Industry", "Employee count","City","Country" + "\n");
@@ -526,7 +526,7 @@ public class CreateApp {
                         "\n######################################################\n" +
                         "The id was not found! Please enter a valid id number!\n" +
                         "######################################################\n");
-                System.out.println("\n\n");
+                System.out.println("\n");
             }
             break;
         }
@@ -594,6 +594,11 @@ public class CreateApp {
         }
     }
 
+
+    /**
+     * Funcion que llena las tablas de Leads y SalesReps
+     *
+     */
     private void llenarTablas(){
         SalesRep salesRep1 = new SalesRep("Antonio");
         SalesRep salesRep2 = new SalesRep("Miguel");
@@ -616,85 +621,6 @@ public class CreateApp {
         leadService.save(lead3);
         leadService.save(lead4);
         leadService.save(lead5);
-
-        Contact contact1 = new Contact(lead1);
-        Contact contact2 = new Contact(lead2);
-        Contact contact3 = new Contact(lead3);
-        Contact contact4 = new Contact(lead4);
-        Contact contact5 = new Contact(lead5);
-
-
-        /*Account account1 = new Account("Manufacturing", 20, "Girona","Espania");
-        Account account2 = new Account("Ecommerce", 40, "Sevilla","Espania");
-        Account account3 = new Account("Other", 20, "Girona","Espania");
-        Account account4 = new Account("Ecommerce", 40, "Sevilla","Espania");
-        Account account5 = new Account("Manufacturing", 20, "Girona","Espania");
-
-
-        Opportunity opportunity1 = new Opportunity("hybrid", 45, contact1,salesRep1);
-        Opportunity opportunity2 = new Opportunity("flatbed",2,contact2, salesRep2);
-        Opportunity opportunity3 = new Opportunity("flatbed", 8, contact1,salesRep3);
-        Opportunity opportunity4 = new Opportunity("flatbed",26,contact2, salesRep4);
-        Opportunity opportunity5 = new Opportunity("box", 89, contact1,salesRep1);
-
-        contact1.setAccount(account1);
-        contact2.setAccount(account2);
-        contact3.setAccount(account3);
-        contact4.setAccount(account4);
-        contact5.setAccount(account5);
-
-        opportunity1.setAccount(account1);
-        opportunity2.setAccount(account2);
-        opportunity3.setAccount(account3);
-        opportunity4.setAccount(account4);
-        opportunity5.setAccount(account5);
-
-        contact1.setOpportunity(opportunity1);
-        contact2.setOpportunity(opportunity2);
-        contact3.setOpportunity(opportunity3);
-        contact4.setOpportunity(opportunity4);
-        contact5.setOpportunity(opportunity5);
-
-
-
-        opportunity1.setContact(contact1);
-        opportunity2.setContact(contact2);
-        opportunity3.setContact(contact3);
-        opportunity4.setContact(contact4);
-        opportunity5.setContact(contact5);
-
-        account1.setOpportunity(opportunity1);
-        account2.setOpportunity(opportunity2);
-        account3.setOpportunity(opportunity3);
-        account4.setOpportunity(opportunity4);
-        account5.setOpportunity(opportunity5);
-
-        account1.setContact(contact1);
-        account2.setContact(contact2);
-        account3.setContact(contact3);
-        account4.setContact(contact4);
-        account5.setContact(contact5);
-
-
-
-
-        contactService.save(contact1);
-        contactService.save(contact2);
-        contactService.save(contact3);
-        contactService.save(contact4);
-        contactService.save(contact5);
-
-        accountService.save(account1);
-        accountService.save(account2);
-        accountService.save(account3);
-        accountService.save(account4);
-        accountService.save(account5);
-
-        opportunittyService.save(opportunity1);
-        opportunittyService.save(opportunity2);
-        opportunittyService.save(opportunity3);
-        opportunittyService.save(opportunity4);
-        opportunittyService.save(opportunity5);*/
     }
 
 
